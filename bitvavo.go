@@ -338,16 +338,17 @@ type SubscriptionTicker24h struct {
 }
 
 type SubscriptionAccountFill struct {
-	Event       string `json:"event"`
-	Timestamp   int    `json:"timestamp"`
-	Market      string `json:"market"`
-	OrderId     string `json:"orderId"`
-	FillId      string `json:"fillId"`
-	Amount      string `json:"amount"`
-	Price       string `json:"price"`
-	Taker       bool   `json:"taker"`
-	Fee         string `json:"fee"`
-	FeeCurrency string `json:"feeCurrency"`
+	Event         string `json:"event"`
+	Timestamp     int    `json:"timestamp"`
+	Market        string `json:"market"`
+	OrderId       string `json:"orderId"`
+	ClientOrderId string `json:"clientOrderId"`
+	FillId        string `json:"fillId"`
+	Amount        string `json:"amount"`
+	Price         string `json:"price"`
+	Taker         bool   `json:"taker"`
+	Fee           string `json:"fee"`
+	FeeCurrency   string `json:"feeCurrency"`
 }
 
 type SubscriptionAccountOrder struct {
