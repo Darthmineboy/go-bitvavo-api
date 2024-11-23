@@ -353,6 +353,7 @@ type SubscriptionAccountFill struct {
 type SubscriptionAccountOrder struct {
 	Event                string `json:"event"`
 	OrderId              string `json:"orderId"`
+	ClientOrderId        string `json:"clientOrderId"`
 	Market               string `json:"market"`
 	Created              int    `json:"created"`
 	Updated              int    `json:"updated"`
