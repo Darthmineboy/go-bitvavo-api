@@ -215,7 +215,8 @@ type CancelOrderResponse struct {
 }
 
 type CancelOrder struct {
-	OrderId string `json:"orderId"`
+	OrderId       string `json:"orderId"`
+	ClientOrderId string `json:"clientOrderId"`
 }
 
 type GetOrdersResponse struct {
@@ -898,6 +899,21 @@ func (bitvavo Bitvavo) UpdateOrder(market string, orderId string, body map[strin
 
 func (bitvavo Bitvavo) CancelOrder(market string, orderId string) (CancelOrder, error) {
 	options := map[string]string{"market": market, "orderId": orderId}
+	postfix := bitvavo.createPostfix(options)
+	jsonResponse := bitvavo.sendPrivate("/order", postfix, map[string]string{}, "DELETE")
+	var t CancelOrder
+	err := json.Unmarshal(jsonResponse, &t)
+	if err != nil {
+		return CancelOrder{}, MyError{Err: err}
+	}
+	if t.OrderId == "" {
+		return CancelOrder{}, handleAPIError(jsonResponse)
+	}
+	return t, nil
+}
+
+func (bitvavo Bitvavo) CancelClientOrder(market string, clientOrderId string) (CancelOrder, error) {
+	options := map[string]string{"market": market, "clientOrderId": clientOrderId}
 	postfix := bitvavo.createPostfix(options)
 	jsonResponse := bitvavo.sendPrivate("/order", postfix, map[string]string{}, "DELETE")
 	var t CancelOrder
