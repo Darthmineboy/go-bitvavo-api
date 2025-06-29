@@ -484,6 +484,7 @@ type Bitvavo struct {
 	WS                Websocket
 	reconnectTimer    int
 	Debugging         bool
+	OperatorID        int64
 }
 
 type Websocket struct {
@@ -851,6 +852,7 @@ func (bitvavo Bitvavo) PlaceOrder(market string, side string, orderType string, 
 	body["market"] = market
 	body["side"] = side
 	body["orderType"] = orderType
+	body["operatorId"] = bitvavo.OperatorID
 	jsonResponse := bitvavo.sendPrivate("/order", "", body, "POST")
 	var t Order
 	err := json.Unmarshal(jsonResponse, &t)
@@ -885,6 +887,7 @@ func (bitvavo Bitvavo) GetOrder(market string, orderId string) (Order, error) {
 func (bitvavo Bitvavo) UpdateOrder(market string, orderId string, body map[string]any) (Order, error) {
 	body["market"] = market
 	body["orderId"] = orderId
+	body["operatorId"] = bitvavo.OperatorID
 	jsonResponse := bitvavo.sendPrivate("/order", "", body, "PUT")
 	var t Order
 	err := json.Unmarshal(jsonResponse, &t)
@@ -898,7 +901,7 @@ func (bitvavo Bitvavo) UpdateOrder(market string, orderId string, body map[strin
 }
 
 func (bitvavo Bitvavo) CancelOrder(market string, orderId string) (CancelOrder, error) {
-	options := map[string]string{"market": market, "orderId": orderId}
+	options := map[string]string{"market": market, "orderId": orderId, "operatorId": strconv.FormatInt(bitvavo.OperatorID, 10)}
 	postfix := bitvavo.createPostfix(options)
 	jsonResponse := bitvavo.sendPrivate("/order", postfix, map[string]any{}, "DELETE")
 	var t CancelOrder
