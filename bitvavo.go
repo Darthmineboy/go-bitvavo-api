@@ -7,7 +7,6 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"github.com/gorilla/websocket"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -16,6 +15,8 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/gorilla/websocket"
 )
 
 var rateLimitRemaining = 1000
@@ -916,7 +917,7 @@ func (bitvavo Bitvavo) CancelOrder(market string, orderId string) (CancelOrder, 
 }
 
 func (bitvavo Bitvavo) CancelClientOrder(market string, clientOrderId string) (CancelOrder, error) {
-	options := map[string]string{"market": market, "clientOrderId": clientOrderId}
+	options := map[string]string{"market": market, "clientOrderId": clientOrderId, "operatorId": strconv.FormatInt(bitvavo.OperatorID, 10)}
 	postfix := bitvavo.createPostfix(options)
 	jsonResponse := bitvavo.sendPrivate("/order", postfix, map[string]any{}, "DELETE")
 	var t CancelOrder
