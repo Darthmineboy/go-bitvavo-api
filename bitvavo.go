@@ -41,7 +41,9 @@ type Markets struct {
 	Base                 string   `json:"base"`
 	Quote                string   `json:"quote"`
 	Market               string   `json:"market"`
-	PricePrecision       int      `json:"pricePrecision"`
+	QuantityDecimals     int      `json:"quantityDecimals"`
+	NotionalDecimals     int      `json:"notionalDecimals"`
+	TickSize             string   `json:"tickSize"`
 	MinOrderInQuoteAsset string   `json:"minOrderInQuoteAsset"`
 	MinOrderInBaseAsset  string   `json:"minOrderInBaseAsset"`
 	OrderTypes           []string `json:"orderTypes"`
